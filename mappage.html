@@ -294,35 +294,6 @@
     outline: 2px solid var(--sage);
     outline-offset: 2px;
   }
-.stat-chip{ background: rgba(255,255,255,0.55); border:1px solid var(--paper-line); border-radius:14px; padding:0.7rem 1rem; min-width:92px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-.stat-chip:hover{ transform: translateY(-2px); box-shadow: var(--shadow-soft); }
-.stat-num{ font-family:'Playfair Display',serif; font-size:1.5rem; line-height:1; color:var(--forest-deep); }
-.stat-lbl{ font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(36,31,22,0.5); font-weight:600; margin-top:0.25rem; }
-
-#resetAll{ font-size:0.72rem; font-weight:600; color:var(--clay-deep); cursor:pointer; display:inline-flex; align-items:center; gap:0.35rem; padding:0.42rem 0.7rem; border-radius:999px; border:1px solid transparent; transition:all 0.2s; }
-#resetAll:hover{ background:rgba(168,88,50,0.08); border-color:var(--paper-line); }
-
-.map-toggle{ display:inline-flex; border:1px solid var(--paper-line); border-radius:999px; overflow:hidden; background:rgba(255,255,255,0.5); }
-.map-toggle button{ font-size:0.68rem; font-weight:600; padding:0.35rem 0.75rem; color:rgba(36,31,22,0.6); transition:all 0.2s; }
-.map-toggle button[data-active="true"]{ background:var(--forest); color:var(--cream); }
-
-.state-path.heat-1{ fill:#D8DEC4; } .state-path.heat-2{ fill:#B6C79E; }
-.state-path.heat-3{ fill:#8FAA78; } .state-path.heat-4{ fill:#5E7E52; }
-.state-path.heat-5{ fill:#3A5A38; }
-
-.specimen{ animation: cardIn 0.4s ease both; }
-@keyframes cardIn{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none;} }
-
-.region-tag{ display:inline-block; font-size:0.6rem; font-weight:600; padding:0.12rem 0.4rem; border-radius:6px; background:var(--sage-pale); color:var(--forest-deep); margin:0.15rem 0.15rem 0 0; cursor:pointer; transition:background 0.15s; }
-.region-tag:hover{ background:var(--sage); color:#fff; }
-
-#detailDrawer{ position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:var(--cream); box-shadow:-20px 0 60px -20px rgba(31,59,44,0.4); border-left:1px solid var(--paper-line); transform:translateX(100%); transition:transform 0.4s cubic-bezier(0.22,1,0.36,1); z-index:60; overflow-y:auto; }
-#detailDrawer.open{ transform:translateX(0); }
-#drawerOverlay{ position:fixed; inset:0; background:rgba(22,40,31,0.35); opacity:0; pointer-events:none; transition:opacity 0.3s; z-index:55; backdrop-filter:blur(2px); }
-#drawerOverlay.open{ opacity:1; pointer-events:auto; }
-#clearSearch{ cursor:pointer; color:rgba(36,31,22,0.4); } #clearSearch:hover{ color:var(--clay); }
-
-  
 </style>
 </head>
 <body class="paper-grain">
@@ -340,21 +311,12 @@
         <p class="mt-2 text-sm md:text-base max-w-xl" style="color:rgba(36,31,22,0.66)">
           Thirty-nine trees rooted in Marathi vernacular, mapped across the states of India where they grow wild and close to home.
         </p>
-     <div class="flex gap-3">
-  <div class="stat-chip text-center">
-    <div class="stat-num" id="statSpecies">39</div>
-    <div class="stat-lbl">Species</div>
-  </div>
-  <div class="stat-chip text-center">
-    <div class="stat-num" id="statStates">0</div>
-    <div class="stat-lbl">States mapped</div>
-  </div>
-  <div class="stat-chip text-center">
-    <div class="stat-num" id="statShown">39</div>
-    <div class="stat-lbl">In view</div>
-  </div>
-</div>
-
+      </div>
+      <button id="quizToggle" data-active="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2 L14.5 8.5 L21 9.3 L16 13.8 L17.5 20.5 L12 17 L6.5 20.5 L8 13.8 L3 9.3 L9.5 8.5 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span id="quizToggleLabel">Start Field Quiz</span>
+      </button>
+    </div>
 
     <!-- search + filters -->
     <div class="mt-7 flex flex-col lg:flex-row gap-4 lg:items-center">
