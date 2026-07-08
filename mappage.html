@@ -311,12 +311,21 @@
         <p class="mt-2 text-sm md:text-base max-w-xl" style="color:rgba(36,31,22,0.66)">
           Thirty-nine trees rooted in Marathi vernacular, mapped across the states of India where they grow wild and close to home.
         </p>
-      </div>
-      <button id="quizToggle" data-active="false">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2 L14.5 8.5 L21 9.3 L16 13.8 L17.5 20.5 L12 17 L6.5 20.5 L8 13.8 L3 9.3 L9.5 8.5 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-        <span id="quizToggleLabel">Start Field Quiz</span>
-      </button>
-    </div>
+     <div class="flex gap-3">
+  <div class="stat-chip text-center">
+    <div class="stat-num" id="statSpecies">39</div>
+    <div class="stat-lbl">Species</div>
+  </div>
+  <div class="stat-chip text-center">
+    <div class="stat-num" id="statStates">0</div>
+    <div class="stat-lbl">States mapped</div>
+  </div>
+  <div class="stat-chip text-center">
+    <div class="stat-num" id="statShown">39</div>
+    <div class="stat-lbl">In view</div>
+  </div>
+</div>
+
 
     <!-- search + filters -->
     <div class="mt-7 flex flex-col lg:flex-row gap-4 lg:items-center">
