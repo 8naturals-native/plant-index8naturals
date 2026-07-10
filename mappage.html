@@ -246,7 +246,84 @@
     cursor:pointer;
   }
 
-  @media (prefers-reduced-motion: reduce){
+    /* ---------- stat strip ---------- */
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1rem; }
+  .stat-chip{
+    display:flex; align-items:baseline; gap:0.35rem;
+    padding:0.35rem 0.85rem; border-radius:999px;
+    background: rgba(255,255,255,0.55); border:1px solid var(--paper-line);
+    font-size:0.72rem; color: rgba(36,31,22,0.7);
+  }
+  .stat-chip strong{ font-family:'Fraunces',serif; font-size:0.95rem; color: var(--forest-deep); }
+
+  /* ---------- toolbar icon buttons ---------- */
+  .icon-btn{
+    display:inline-flex; align-items:center; gap:0.4rem;
+    padding:0.5rem 0.85rem; border-radius:999px;
+    border:1px solid var(--paper-line); background: rgba(255,255,255,0.55);
+    color: var(--forest-deep); font-size:0.76rem; font-weight:600;
+    font-family:'Inter',sans-serif; cursor:pointer; transition: all 0.2s ease;
+  }
+  .icon-btn:hover{ transform: translateY(-1px); box-shadow: var(--shadow-soft); border-color: rgba(111,143,106,0.5); }
+  .icon-btn:active{ transform: translateY(0); }
+
+  /* ---------- density toggle ---------- */
+  .density-toggle{
+    display:inline-flex; align-items:center; gap:0.5rem;
+    background:none; border:none; padding:0;
+    font-family:'Inter',sans-serif; font-size:0.74rem; font-weight:600;
+    color: var(--forest-deep); cursor:pointer;
+  }
+  .density-toggle-track{
+    width:32px; height:18px; border-radius:999px; background: var(--sage-pale);
+    position:relative; transition: background 0.2s ease; flex-shrink:0;
+  }
+  .density-toggle-thumb{
+    position:absolute; top:2px; left:2px; width:14px; height:14px;
+    border-radius:999px; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.25);
+    transition: transform 0.2s ease;
+  }
+  .density-toggle[aria-pressed="true"] .density-toggle-track{ background: var(--forest); }
+  .density-toggle[aria-pressed="true"] .density-toggle-thumb{ transform: translateX(14px); }
+
+  .density-legend{ display:flex; align-items:center; gap:0.4rem; font-size:0.68rem; color: rgba(36,31,22,0.55); padding:0 0.25rem 0.6rem; }
+  .density-legend.hidden{ display:none; }
+  .density-legend-swatch{ width:16px; height:10px; border-radius:3px; border:1px solid var(--paper-line); }
+
+  /* ---------- sort controls ---------- */
+  .sort-btn{
+    font-family:'Inter',sans-serif; font-size:0.68rem; font-weight:600;
+    padding:0.3rem 0.65rem; border-radius:999px; border:1px solid var(--paper-line);
+    background: rgba(255,255,255,0.5); color: rgba(36,31,22,0.6);
+    cursor:pointer; transition: all 0.2s ease;
+  }
+  .sort-btn[data-active="true"]{ background: var(--forest); color:#fff; border-color: transparent; }
+  .sort-btn:hover{ transform: translateY(-1px); }
+
+  /* ---------- toast ---------- */
+  #toast{
+    position:fixed; left:50%; bottom:28px; transform: translate(-50%, 20px);
+    background: var(--ink); color: var(--cream); padding:0.65rem 1.1rem;
+    border-radius:10px; font-size:0.8rem; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    opacity:0; pointer-events:none; transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index:50; max-width:90vw; text-align:center;
+  }
+  #toast.is-visible{ opacity:1; transform: translate(-50%, 0); }
+
+  /* ---------- specimen detail expansion ---------- */
+  .specimen-detail{ max-height:0; overflow:hidden; opacity:0; transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease; }
+  .specimen.is-focused .specimen-detail{ max-height:200px; opacity:1; margin-top:0.7rem; }
+  .state-chip-row{ display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:0.5rem; }
+  .state-chip{
+    font-size:0.63rem; font-weight:600; padding:0.15rem 0.5rem; border-radius:999px;
+    background: var(--sage-pale); color: var(--forest-deep); cursor:pointer; border:none;
+  }
+  .state-chip:hover{ background: var(--sage); color:#fff; }
+
+  /* ---------- card entrance ---------- */
+  @keyframes cardIn{ from{ opacity:0; transform: translateY(8px); } to{ opacity:1; transform: translateY(0); } }
+  .specimen{ animation: cardIn 0.4s ease backwards; }
+@media (prefers-reduced-motion: reduce){
     .state-path.is-glow{ animation: none; }
     * { transition-duration: 0.01ms !important; }
   }
