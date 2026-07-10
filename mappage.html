@@ -301,14 +301,145 @@
   .sort-btn:hover{ transform: translateY(-1px); }
 
   /* ---------- toast ---------- */
-  #toast{
-    position:fixed; left:50%; bottom:28px; transform: translate(-50%, 20px);
-    background: var(--ink); color: var(--cream); padding:0.65rem 1.1rem;
-    border-radius:10px; font-size:0.8rem; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    opacity:0; pointer-events:none; transition: opacity 0.25s ease, transform 0.25s ease;
-    z-index:50; max-width:90vw; text-align:center;
+    // ---------- toast ----------
+  const toastEl = document.createElement('div');
+  toastEl.id = 'toast';
+  document.body.appendChild(toastEl);
+  let toastTimer = null;
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 2600);
   }
-  #toast.is-visible{ opacity:1; transform: translate(-50%, 0); }
+
+  // ---------- density heatmap ----------
+  function densityColor(count, max){
+    if (!count) return '';
+    const ratio = count / max;
+    if (ratio > 0.75) return '#1F3B2C';
+    if (ratio > 0.5) return '#6F8F6A';
+    if (ratio > 0.25) return '#C9D6BC';
+    return '#EAE2CE';
+  }
+  function applyDensity(){
+    const max = Math.max(1, ...Object.values(stateCount));
+    statePaths.forEach(p => {
+      if (densityOn && !p.classList.contains('is-selected') && !p.classList.contains('is-glow')){
+        p.style.fill = densityColor(stateCount[p.id] || 0, max);
+      } else if (!densityOn) {
+        p.style.fill = '';
+      }
+    });
+  }
+  const densityToggle = document.getElementById('densityToggle');
+  const densityLegend = document.getElementById('densityLegend');
+  densityToggle.addEventListener('click', () => {
+    densityOn = !densityOn;
+    densityToggle.setAttribute('aria-pressed', densityOn ? 'true' : 'false');
+    densityLegend.classList.toggle('hidden', !densityOn);
+    applyDensity();
+  });
+
+  // ---------- sort controls ----------
+  document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      sortMode = btn.getAttribute('data-sort');
+      document.querySelectorAll('.sort-btn').forEach(b => b.setAttribute('data-active', b === btn ? 'true' : 'false'));
+      render();
+    });
+  });
+
+  // ---------- stat strip ----------
+  function paintStats(){
+    const totalStates = new Set(PLANTS.flatMap(p => p.states)).size;
+    const cats = new Set(PLANTS.map(p => p.category)).size;
+    document.getElementById('statStrip').innerHTML = `
+      <span class="stat-chip"><strong>${PLANTS.length}</strong> species</span>
+      <span class="stat-chip"><strong>${totalStates}</strong> states mapped</span>
+      <span class="stat-chip"><strong>${cats}</strong> categories</span>
+    `;
+  }
+  paintStats();
+
+  // ---------- surprise me ----------
+  document.getElementById('surpriseBtn').addEventListener('click', () => {
+    const pool = getFiltered();
+    const list = pool.length ? pool : PLANTS;
+    const pick = list[Math.floor(Math.random() * list.length)];
+    focusedPlantId = pick.id;
+    render();
+    requestAnimationFrame(() => {
+      const card = cardGrid.querySelector(`[data-plant-id="${pick.id}"]`);
+      if (card) card.scrollIntoView({ behavior:'smooth', block:'center' });
+    });
+    showToast(`Discovering ${pick.marathi} · ${pick.common}`);
+  });
+
+  // ---------- share this view ----------
+  document.getElementById('shareBtn').addEventListener('click', async () => {
+    updateHash();
+    try {
+      await navigator.clipboard.writeText(location.href);
+      showToast('Link to this view copied');
+    } catch(e){
+      showToast(location.href);
+    }
+  });
+
+  // ---------- URL hash persistence ----------
+  function updateHash(){
+    const params = new URLSearchParams();
+    if (selectedState) params.set('state', selectedState);
+    if (activeCats.size) params.set('cats', Array.from(activeCats).join(','));
+    if (searchTerm) params.set('q', searchTerm);
+    if (sortMode !== 'default') params.set('sort', sortMode);
+    const str = params.toString();
+    history.replaceState(null, '', str ? ('#' + str) : (location.pathname + location.search));
+  }
+  function applyHash(){
+    if (!location.hash) return;
+    const params = new URLSearchParams(location.hash.slice(1));
+    const stateParam = params.get('state');
+    const catsParam = params.get('cats');
+    const qParam = params.get('q');
+    const sortParam = params.get('sort');
+    if (stateParam && stateById[stateParam]) selectedState = stateParam;
+    if (catsParam) {
+      activeCats = new Set(catsParam.split(',').filter(c => CAT_LABELS[c]));
+      document.querySelectorAll('.pill').forEach(pill => {
+        const cat = pill.getAttribute('data-cat');
+        pill.setAttribute('data-active', activeCats.has(cat) ? 'true' : 'false');
+      });
+    }
+    if (qParam) {
+      searchTerm = qParam.toLowerCase();
+      document.getElementById('searchInput').value = qParam;
+    }
+    if (sortParam && ['alpha','range','default'].includes(sortParam)) {
+      sortMode = sortParam;
+      document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.setAttribute('data-active', btn.getAttribute('data-sort') === sortMode ? 'true' : 'false');
+      });
+    }
+  }
+
+  // ---------- keyboard shortcuts ----------
+  document.addEventListener('keydown', (e) => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea';
+    if (e.key === '/' && !typing){
+      e.preventDefault();
+      document.getElementById('searchInput').focus();
+    } else if (e.key === 'Escape'){
+      if (typing) e.target.blur();
+      searchTerm = '';
+      document.getElementById('searchInput').value = '';
+      selectedState = null;
+      focusedPlantId = null;
+      render();
+    }
+  });
 
   /* ---------- specimen detail expansion ---------- */
   .specimen-detail{ max-height:0; overflow:hidden; opacity:0; transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease; }
@@ -323,10 +454,12 @@
   /* ---------- card entrance ---------- */
   @keyframes cardIn{ from{ opacity:0; transform: translateY(8px); } to{ opacity:1; transform: translateY(0); } }
   .specimen{ animation: cardIn 0.4s ease backwards; }
-@media (prefers-reduced-motion: reduce){
+  @media (prefers-reduced-motion: reduce){
     .state-path.is-glow{ animation: none; }
+    .specimen{ animation: none; }
     * { transition-duration: 0.01ms !important; }
   }
+
 
   input:focus, button:focus, [tabindex]:focus{
     outline: 2px solid var(--sage);
@@ -339,7 +472,7 @@
 <div class="max-w-[1400px] mx-auto px-5 md:px-10 py-8 md:py-10">
 
   <!-- ===================== HEADER ===================== -->
-  <header class="mb-8 md:mb-10">
+   <header class="mb-8 md:mb-10">
     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
       <div>
         <p class="eyebrow mb-2">A Field Atlas of Native Species</p>
@@ -349,6 +482,7 @@
         <p class="mt-2 text-sm md:text-base max-w-xl" style="color:rgba(36,31,22,0.66)">
           Thirty-nine trees rooted in Marathi vernacular, mapped across the states of India where they grow wild and close to home.
         </p>
+        <div class="stat-strip" id="statStrip"></div>
       </div>
       <div class="text-right">
         <p class="font-mono-label text-xs" style="color:var(--forest)">8 NATURALS</p>
@@ -370,6 +504,34 @@
         <div class="pill" data-cat="fruit" data-active="false"><span class="pill-dot"></span>Fruit-bearing</div>
         <div class="pill" data-cat="medicinal" data-active="false"><span class="pill-dot"></span>Medicinal &amp; Utility</div>
       </div>
+
+      <div class="flex gap-2 lg:ml-auto">
+        <button id="surpriseBtn" class="icon-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z" fill="var(--amber)"/></svg>
+          Surprise me
+        </button>
+        <button id="shareBtn" class="icon-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="1.8"><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M8 11 L16 7 M8 13 L16 17"/></svg>
+          Share this view
+        </button>
+      </div>
+    </div>
+  </header>
+
+
+    <!-- search + filters -->
+    <div class="mt-7 flex flex-col lg:flex-row gap-4 lg:items-center">
+      <label class="search-wrap flex items-center gap-2 rounded-full px-4 py-2.5 w-full lg:max-w-sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:var(--forest); flex-shrink:0;"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20 L16.5 16.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input id="searchInput" type="text" placeholder="Search Marathi, common, or botanical name…" class="w-full text-sm" />
+      </label>
+
+      <div class="flex flex-wrap gap-2" id="filterPills">
+        <div class="pill" data-cat="timber" data-active="false"><span class="pill-dot"></span>Shade &amp; Timber</div>
+        <div class="pill" data-cat="flowering" data-active="false"><span class="pill-dot"></span>Flowering</div>
+        <div class="pill" data-cat="fruit" data-active="false"><span class="pill-dot"></span>Fruit-bearing</div>
+        <div class="pill" data-cat="medicinal" data-active="false"><span class="pill-dot"></span>Medicinal &amp; Utility</div>
+      </div>
     </div>
   </header>
 
@@ -377,14 +539,28 @@
   <main class="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-6">
 
     <!-- ---------------- MAP COLUMN ---------------- -->
-    <section class="map-frame rounded-2xl p-4 md:p-6 relative" style="min-height: 560px;">
-      <div class="flex items-center justify-between mb-3 px-1">
+          <div class="flex items-center justify-between mb-1 px-1 flex-wrap gap-2">
         <p class="font-mono-label text-xs" style="color:var(--forest)">INDIA · NATIVE DISTRIBUTION</p>
-        <div id="selectionInfo" class="hidden items-center gap-2">
-          <span class="badge-count" id="selectedStateBadge"></span>
-          <span class="clear-btn" id="clearStateBtn">Clear</span>
+        <div class="flex items-center gap-3">
+          <button id="densityToggle" class="density-toggle" type="button" aria-pressed="false">
+            <span class="density-toggle-track"><span class="density-toggle-thumb"></span></span>
+            Density view
+          </button>
+          <div id="selectionInfo" class="hidden items-center gap-2">
+            <span class="badge-count" id="selectedStateBadge"></span>
+            <span class="clear-btn" id="clearStateBtn">Clear</span>
+          </div>
         </div>
       </div>
+      <div id="densityLegend" class="density-legend hidden">
+        <span>Fewer species</span>
+        <span class="density-legend-swatch" style="background:#EAE2CE"></span>
+        <span class="density-legend-swatch" style="background:#C9D6BC"></span>
+        <span class="density-legend-swatch" style="background:#6F8F6A"></span>
+        <span class="density-legend-swatch" style="background:#1F3B2C"></span>
+        <span>More species</span>
+      </div>
+
 
       <div class="relative" id="mapWrap">
         <svg id="indiaMap" viewBox="0 0 612 696" class="w-full h-auto" style="max-height:520px; margin:0 auto; display:block;" role="img" aria-label="Map of India by state">
@@ -438,14 +614,22 @@
     <!-- ---------------- EXPLORER COLUMN ---------------- -->
     <section class="rounded-2xl p-4 md:p-6 relative" style="background:rgba(255,255,255,0.4); border:1px solid var(--paper-line); box-shadow: var(--shadow-soft);">
 
-      <!-- Normal explorer header -->
-      <div id="explorerHeader" class="flex items-center justify-between mb-4 px-1">
+           <!-- Normal explorer header -->
+      <div id="explorerHeader" class="flex items-start justify-between mb-4 px-1 flex-wrap gap-3">
         <div>
           <p class="font-mono-label text-xs" style="color:var(--forest)">BOTANICAL EXPLORER</p>
           <h2 class="font-display text-xl mt-0.5" id="explorerTitle" style="color:var(--forest-deep)">All Native Species</h2>
         </div>
-        <span class="badge-count" id="resultsCount">39 shown</span>
+        <div class="flex flex-col items-end gap-2">
+          <span class="badge-count" id="resultsCount">39 shown</span>
+          <div class="flex gap-1.5" id="sortControls">
+            <button class="sort-btn" data-sort="default" data-active="true" type="button">Curated</button>
+            <button class="sort-btn" data-sort="alpha" data-active="false" type="button">A–Z</button>
+            <button class="sort-btn" data-sort="range" data-active="false" type="button">Widest range</button>
+          </div>
+        </div>
       </div>
+
 
       <!-- Card grid -->
       <div id="cardGrid" class="explorer-scroll grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1" style="max-height: 640px;"></div>
@@ -590,8 +774,8 @@
   });
 
   // ---------- filtering ----------
-  function getFiltered(){
-    return PLANTS.filter(p => {
+   function getFiltered(){
+    const list = PLANTS.filter(p => {
       if (activeCats.size && !activeCats.has(p.category)) return false;
       if (selectedState && !p.states.includes(selectedState)) return false;
       if (searchTerm){
@@ -600,18 +784,28 @@
       }
       return true;
     });
+    if (sortMode === 'alpha'){
+      list.sort((a,b) => a.common.localeCompare(b.common));
+    } else if (sortMode === 'range'){
+      list.sort((a,b) => b.states.length - a.states.length || a.common.localeCompare(b.common));
+    }
+    return list;
   }
 
   // ---------- card rendering ----------
-  function cardTemplate(p, idx){
+    function cardTemplate(p, originalIdx, animIdx){
     const focused = focusedPlantId === p.id;
-    return `<div class="specimen ${focused ? 'is-focused' : ''}" data-plant-id="${p.id}" tabindex="0" role="button" aria-pressed="${focused}">
+    const stateChips = p.states.map(sid => {
+      const name = stateById[sid] ? stateById[sid].getAttribute('data-name') : sid;
+      return `<button class="state-chip" data-locate="${sid}" type="button">${name}</button>`;
+    }).join('');
+    return `<div class="specimen ${focused ? 'is-focused' : ''}" data-plant-id="${p.id}" tabindex="0" role="button" aria-pressed="${focused}" style="animation-delay:${Math.min(animIdx * 35, 350)}ms">
       <div class="flex items-start gap-3">
         <div class="leaf-slot">${ICONS[p.category]}</div>
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between gap-2">
             <span class="cat-tag" data-cat="${p.category}">${CAT_LABELS[p.category]}</span>
-            <span class="specimen-num">No. ${String(idx+1).padStart(2,'0')}</span>
+            <span class="specimen-num">No. ${String(originalIdx+1).padStart(2,'0')}</span>
           </div>
           <h3 class="font-display text-base mt-1.5 leading-tight" style="color:var(--forest-deep)">${p.marathi}</h3>
           <p class="text-sm font-medium" style="color:var(--ink)">${p.common}</p>
@@ -619,10 +813,62 @@
         </div>
       </div>
       <p class="text-xs mt-2.5 leading-relaxed" style="color:rgba(36,31,22,0.62)">${p.note}</p>
+      <div class="specimen-detail">
+        <p class="text-[0.68rem] font-semibold" style="color:var(--forest)">NATIVE TO ${p.states.length} STATE${p.states.length>1?'S':''}</p>
+        <div class="state-chip-row">${stateChips}</div>
+      </div>
     </div>`;
   }
 
-  function render(){
+
+    function render(){
+    statePaths.forEach(p => {
+      p.classList.toggle('is-selected', selectedState === p.id);
+      const glowing = focusedPlantId && PLANTS.find(pl => pl.id === focusedPlantId)?.states.includes(p.id);
+      p.classList.toggle('is-glow', !!glowing);
+    });
+    applyDensity();
+
+    selectionInfo.classList.toggle('hidden', !selectedState);
+    if (selectedState) {
+      selectionInfo.classList.add('flex');
+      selectedStateBadge.textContent = stateById[selectedState].getAttribute('data-name');
+    }
+
+    const filtered = getFiltered();
+    explorerTitle.textContent = selectedState
+      ? stateById[selectedState].getAttribute('data-name')
+      : (activeCats.size ? Array.from(activeCats).map(c=>CAT_LABELS[c]).join(' + ') : 'All Native Species');
+    resultsCount.textContent = filtered.length + ' shown';
+
+    cardGrid.innerHTML = filtered.map((p, i) => cardTemplate(p, PLANTS.indexOf(p), i)).join('');
+    emptyState.classList.toggle('hidden', filtered.length !== 0);
+    cardGrid.classList.toggle('hidden', filtered.length === 0);
+
+    cardGrid.querySelectorAll('.specimen').forEach(card => {
+      const activate = () => {
+        const id = Number(card.getAttribute('data-plant-id'));
+        focusedPlantId = (focusedPlantId === id) ? null : id;
+        render();
+      };
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.state-chip')) return;
+        activate();
+      });
+      card.addEventListener('keypress', (e) => { if (e.key === 'Enter') activate(); });
+      card.querySelectorAll('.state-chip').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectedState = chip.getAttribute('data-locate');
+          render();
+          mapWrap.scrollIntoView({ behavior:'smooth', block:'center' });
+        });
+      });
+    });
+
+    updateHash();
+  }
+
     // map state classes
     statePaths.forEach(p => {
       p.classList.toggle('is-selected', selectedState === p.id);
@@ -649,7 +895,9 @@
     cardGrid.querySelectorAll('.specimen').forEach(card => {
       const activate = () => {
         const id = Number(card.getAttribute('data-plant-id'));
-        focusedPlantId = (focusedPlantId === id) ? null : id;
+        focusedPlantId = (focusedPlantId === id) ? null : id;   let sortMode = 'default';
+  let densityOn = false;
+
         render();
       };
       card.addEventListener('click', activate);
