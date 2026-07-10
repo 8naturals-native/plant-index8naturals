@@ -115,21 +115,6 @@
   .pill[data-cat="medicinal"] .pill-dot{ background: var(--clay); }
   .pill[data-active="true"] .pill-dot{ background: rgba(255,255,255,0.85); }
 
-  /* ---------- quiz toggle ---------- */
-  #quizToggle{
-    background: var(--forest);
-    color: var(--cream);
-    border-radius: 999px;
-    padding: 0.55rem 1.1rem;
-    font-weight:600;
-    font-size:0.82rem;
-    display:inline-flex; align-items:center; gap:0.5rem;
-    box-shadow: var(--shadow-soft);
-    transition: transform 0.2s ease, background 0.2s ease;
-  }
-  #quizToggle:hover{ transform: translateY(-1px); }
-  #quizToggle[data-active="true"]{ background: var(--clay); }
-
   /* ---------- map panel ---------- */
   .map-frame{
     background:
@@ -158,14 +143,6 @@
   .state-path.is-glow{
     fill: var(--amber);
     animation: glowPulse 1.6s ease-in-out infinite;
-  }
-  .state-path.is-quiz-correct{
-    fill: #4C7A4E !important;
-    animation: none;
-  }
-  .state-path.is-quiz-wrong{
-    fill: var(--rose) !important;
-    animation: none;
   }
   @keyframes glowPulse{
     0%, 100% { filter: brightness(1) drop-shadow(0 0 0px rgba(192,138,40,0.0)); }
@@ -250,22 +227,6 @@
 
   .botanical-name{ font-style: italic; color: rgba(36,31,22,0.62); font-size:0.8rem; }
 
-  /* ---------- quiz card ---------- */
-  .quiz-card{
-    background: linear-gradient(160deg, rgba(31,59,44,0.06), rgba(255,255,255,0.5));
-    border: 1px solid var(--paper-line);
-    border-radius: 16px;
-    padding: 1.4rem;
-  }
-  .score-chip{
-    font-family:'Fraunces',serif;
-    font-size: 0.8rem;
-    color: var(--forest);
-    background: var(--sage-pale);
-    padding: 0.25rem 0.7rem;
-    border-radius:999px;
-  }
-
   /* ---------- misc ---------- */
   .badge-count{
     font-family:'Fraunces',serif;
@@ -312,10 +273,11 @@
           Thirty-nine trees rooted in Marathi vernacular, mapped across the states of India where they grow wild and close to home.
         </p>
       </div>
-      <button id="quizToggle" data-active="false">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2 L14.5 8.5 L21 9.3 L16 13.8 L17.5 20.5 L12 17 L6.5 20.5 L8 13.8 L3 9.3 L9.5 8.5 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-        <span id="quizToggleLabel">Start Field Quiz</span>
-      </button>
+      <div class="text-right">
+        <p class="font-mono-label text-xs" style="color:var(--forest)">8 NATURALS</p>
+        <a href="tel:+918208040061" class="block text-sm font-semibold" style="color:var(--forest-deep)">Mobile: 8208040061</a>
+        <a href="https://www.8naturals.wordpress.com" target="_blank" rel="noopener" class="block text-sm underline" style="color:var(--clay-deep)">www.8naturals.wordpress.com</a>
+      </div>
     </div>
 
     <!-- search + filters -->
@@ -408,20 +370,6 @@
         <span class="badge-count" id="resultsCount">39 shown</span>
       </div>
 
-      <!-- Quiz panel (hidden by default) -->
-      <div id="quizPanel" class="hidden quiz-card mb-4">
-        <div class="flex items-center justify-between mb-3">
-          <p class="font-mono-label text-xs" style="color:var(--forest)">FIELD QUIZ</p>
-          <span class="score-chip" id="scoreChip">Score 0 / 0</span>
-        </div>
-        <p class="font-display text-lg leading-snug mb-3" id="quizQuestion" style="color:var(--forest-deep)"></p>
-        <p class="text-sm mb-3" id="quizFeedback" style="min-height:1.4em; color:var(--clay-deep); font-weight:600;"></p>
-        <div class="flex gap-3">
-          <button id="quizNextBtn" class="pill" data-active="true" style="background:var(--forest); border:none;">Next Question</button>
-          <button id="quizExitBtn" class="pill">Exit Quiz</button>
-        </div>
-      </div>
-
       <!-- Card grid -->
       <div id="cardGrid" class="explorer-scroll grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1" style="max-height: 640px;"></div>
       <p id="emptyState" class="hidden text-sm italic text-center py-10" style="color:rgba(36,31,22,0.5)">No species match this search — try another name or clear filters.</p>
@@ -431,6 +379,7 @@
   <footer class="mt-10 pt-6 hairline border-t text-xs flex flex-col md:flex-row justify-between gap-2" style="color:rgba(36,31,22,0.45)">
     <span>Mool — a botanical grove atlas · 39 species native to India, named in Marathi.</span>
     <span>Map data: @svg-maps/india (Victor Cazanave) · CC BY 4.0</span>
+    <span>8 Naturals · Mobile: 8208040061 · <a href="https://www.8naturals.wordpress.com" target="_blank" rel="noopener" class="underline" style="color:var(--clay-deep)">www.8naturals.wordpress.com</a></span>
   </footer>
 </div>
 
@@ -502,10 +451,6 @@
   let searchTerm = '';
   let selectedState = null;      // locked state id from map click
   let focusedPlantId = null;     // plant whose native states are glowing
-  let quizMode = false;
-  let quizPlant = null;
-  let quizAnswered = false;
-  let score = { correct: 0, total: 0 };
 
   const svg = document.getElementById('indiaMap');
   const statePaths = Array.from(svg.querySelectorAll('.state-path'));
@@ -524,18 +469,11 @@
   const selectionInfo = document.getElementById('selectionInfo');
   const selectedStateBadge = document.getElementById('selectedStateBadge');
   const clearStateBtn = document.getElementById('clearStateBtn');
-  const quizToggle = document.getElementById('quizToggle');
-  const quizToggleLabel = document.getElementById('quizToggleLabel');
-  const quizPanel = document.getElementById('quizPanel');
   const explorerHeader = document.getElementById('explorerHeader');
-  const quizQuestion = document.getElementById('quizQuestion');
-  const quizFeedback = document.getElementById('quizFeedback');
-  const scoreChip = document.getElementById('scoreChip');
 
   // ---------- tooltip ----------
   statePaths.forEach(path => {
     path.addEventListener('mousemove', (e) => {
-      if (quizMode) return;
       const name = path.getAttribute('data-name');
       const count = stateCount[path.id] || 0;
       tooltip.querySelector('.tt-name').textContent = name;
@@ -548,7 +486,6 @@
     path.addEventListener('mouseleave', () => { tooltip.style.opacity = '0'; });
 
     path.addEventListener('click', () => {
-      if (quizMode) { handleQuizAnswer(path.id); return; }
       if (selectedState === path.id) {
         selectedState = null;
       } else {
@@ -574,60 +511,6 @@
       render();
     });
   });
-
-  // ---------- quiz ----------
-  quizToggle.addEventListener('click', () => {
-    quizMode = !quizMode;
-    quizToggle.setAttribute('data-active', quizMode ? 'true' : 'false');
-    quizToggleLabel.textContent = quizMode ? 'Exit Field Quiz' : 'Start Field Quiz';
-    quizPanel.classList.toggle('hidden', !quizMode);
-    explorerHeader.classList.toggle('hidden', quizMode);
-    selectedState = null;
-    focusedPlantId = null;
-    if (quizMode) { score = {correct:0,total:0}; nextQuizQuestion(); }
-    else { clearQuizStyles(); }
-    render();
-  });
-
-  document.getElementById('quizNextBtn').addEventListener('click', nextQuizQuestion);
-  document.getElementById('quizExitBtn').addEventListener('click', () => quizToggle.click());
-
-  function nextQuizQuestion(){
-    clearQuizStyles();
-    quizAnswered = false;
-    quizFeedback.textContent = '';
-    const pool = PLANTS;
-    quizPlant = pool[Math.floor(Math.random() * pool.length)];
-    const templates = [
-      `Click a state where the ${quizPlant.common} (${quizPlant.marathi}) grows natively.`,
-      `Where would you traditionally find ${quizPlant.marathi} — the ${quizPlant.common} — thriving?`,
-      `Tap a state on the map that is native ground for ${quizPlant.botanical}, the ${quizPlant.common}.`
-    ];
-    quizQuestion.textContent = templates[Math.floor(Math.random()*templates.length)];
-  }
-
-  function clearQuizStyles(){
-    statePaths.forEach(p => p.classList.remove('is-quiz-correct','is-quiz-wrong'));
-  }
-
-  function handleQuizAnswer(stateId){
-    if (quizAnswered || !quizPlant) return;
-    quizAnswered = true;
-    score.total++;
-    const isRight = quizPlant.states.includes(stateId);
-    if (isRight) {
-      score.correct++;
-      stateById[stateId].classList.add('is-quiz-correct');
-      quizFeedback.textContent = `Correct — ${stateById[stateId].getAttribute('data-name')} is native ground for the ${quizPlant.common}.`;
-      quizFeedback.style.color = 'var(--forest)';
-    } else {
-      stateById[stateId].classList.add('is-quiz-wrong');
-      quizPlant.states.forEach(s => stateById[s] && stateById[s].classList.add('is-quiz-correct'));
-      quizFeedback.textContent = `Not quite — the ${quizPlant.common} is native to ${quizPlant.states.map(s=>stateById[s].getAttribute('data-name')).join(', ')}.`;
-      quizFeedback.style.color = 'var(--clay-deep)';
-    }
-    scoreChip.textContent = `Score ${score.correct} / ${score.total}`;
-  }
 
   // ---------- filtering ----------
   function getFiltered(){
@@ -667,10 +550,10 @@
     statePaths.forEach(p => {
       p.classList.toggle('is-selected', selectedState === p.id);
       const glowing = focusedPlantId && PLANTS.find(pl => pl.id === focusedPlantId)?.states.includes(p.id);
-      p.classList.toggle('is-glow', !!glowing && !quizMode);
+      p.classList.toggle('is-glow', !!glowing);
     });
 
-    selectionInfo.classList.toggle('hidden', !selectedState || quizMode);
+    selectionInfo.classList.toggle('hidden', !selectedState);
     if (selectedState) {
       selectionInfo.classList.add('flex');
       selectedStateBadge.textContent = stateById[selectedState].getAttribute('data-name');
