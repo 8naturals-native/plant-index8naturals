@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>8 Naturals · Mool — The Native Grove Atlas of India</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Tiro+Devanagari+Marathi:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root{
     --cream:        #F3EEE1;
@@ -39,6 +39,11 @@
 
   .font-display{ font-family: 'Playfair Display', serif; }
   .font-mono-label{ font-family: 'Fraunces', serif; font-feature-settings: "ss01"; letter-spacing: 0.08em; }
+  .font-marathi{
+    font-family: 'Tiro Devanagari Marathi', serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
 
   ::selection{ background: var(--sage-pale); color: var(--forest-deep); }
 
@@ -389,45 +394,45 @@
 
 <script id="plantsData" type="application/json">
 [
-  {"id":1,"marathi":"Wad","common":"Banyan Tree","botanical":"Ficus benghalensis","category":"timber","states":["wb","mh","ka","ap","tn","gj"],"note":"India's national tree; its aerial roots descend into new trunks, letting a single tree spread into a small forest."},
-  {"id":2,"marathi":"Pimpal","common":"Peepal Tree","botanical":"Ficus religiosa","category":"timber","states":["br","up","mp","mh","wb"],"note":"Sacred to both Hindus and Buddhists — tradition holds the Buddha attained enlightenment beneath a Peepal at Bodh Gaya, Bihar."},
-  {"id":6,"marathi":"Umbar","common":"Cluster Fig","botanical":"Ficus racemosa","category":"timber","states":["mh","ka","kl","wb","as"],"note":"Bears fig clusters straight from its trunk and older branches, making it a favourite feeding stop for birds and bats."},
-  {"id":9,"marathi":"Satvin","common":"Indian Devil Tree","botanical":"Alstonia scholaris","category":"timber","states":["wb","or","as","kl","mh"],"note":"West Bengal's state tree, known locally as 'Saptaparni' for the whorls of seven leaves that ring each stem."},
-  {"id":11,"marathi":"Sisu","common":"North Indian Rosewood","botanical":"Dalbergia sissoo","category":"timber","states":["pb","hr","up","hp","jk","ut"],"note":"A quick-growing riverbank tree of the sub-Himalayan tracts, long favoured for furniture and railway sleepers."},
-  {"id":14,"marathi":"Arjun","common":"Arjuna Tree","botanical":"Terminalia arjuna","category":"timber","states":["mp","up","mh","br","wb","ka"],"note":"Named for the Mahabharata's warrior-archer; its bark has featured in traditional heart-tonic preparations for generations."},
-  {"id":15,"marathi":"Shivan","common":"Gamhar","botanical":"Gmelina arborea","category":"timber","states":["as","wb","or","mp","kl"],"note":"One of the fast-growing roots gathered into Ayurveda's classical 'Dashamula' group of ten roots."},
-  {"id":18,"marathi":"Sisam","common":"Indian Rosewood","botanical":"Dalbergia latifolia","category":"timber","states":["mh","ka","mp","tn","kl","or"],"note":"A slow-grown hardwood so dense it barely floats in water, ranked among India's most prized cabinet timbers."},
-  {"id":24,"marathi":"Anjan","common":"Hardwickia","botanical":"Hardwickia binata","category":"timber","states":["mh","mp","ap","tg","ka","tn"],"note":"One of the hardest native timbers, traditionally shaped into cart wheels, tool handles, and agricultural yokes."},
-  {"id":27,"marathi":"Mohagani","common":"Mahogany","botanical":"Swietenia macrophylla","category":"timber","states":["kl","ka","wb","mh","tn"],"note":"Introduced from tropical America over a century ago and now naturalised across South India's plantation belts."},
-  {"id":29,"marathi":"Waval","common":"Indian Elm","botanical":"Holoptelea integrifolia","category":"timber","states":["mh","mp","gj","ka","up"],"note":"A hardy shade tree of village commons and field edges; its bark was once used in traditional leather tanning."},
-  {"id":32,"marathi":"Shirish","common":"Siris Tree","botanical":"Albizia lebbeck","category":"timber","states":["mh","gj","rj","tn","ka","up"],"note":"Its rattling, papery seed pods earn it the folk name 'Woman's Tongue Tree' across the countryside."},
-  {"id":36,"marathi":"Bambu","common":"Bamboo","botanical":"Bambusa bambos","category":"timber","states":["kl","ka","tn","mh","wb","as"],"note":"Botanically a giant grass rather than a tree — and among the fastest-growing plants on the planet."},
-  {"id":3,"marathi":"Bahawa","common":"Golden Shower Tree","botanical":"Cassia fistula","category":"flowering","states":["kl","tn","ka","mh","or"],"note":"Kerala's state flower; cascades of yellow blossom traditionally mark the arrival of the Vishu new year in April."},
-  {"id":7,"marathi":"Kadamba","common":"Burflower-tree","botanical":"Neolamarckia cadamba","category":"flowering","states":["up","as","wb","or","kl"],"note":"Woven into Krishna's legends at Vrindavan; its fragrant orange globe-flowers open with the first monsoon rains."},
-  {"id":8,"marathi":"Palas","common":"Flame of the Forest","botanical":"Butea monosperma","category":"flowering","states":["jh","mp","up","ct","or","mh"],"note":"Jharkhand's state flower — its fiery blossoms have long supplied the natural dye used to colour Holi's powders."},
-  {"id":10,"marathi":"Bakul","common":"Spanish Cherry","botanical":"Mimusops elengi","category":"flowering","states":["wb","ka","tn","mh","kl"],"note":"Its tiny star-shaped flowers hold their fragrance for days even after falling, prized in garlands strung for temple offerings."},
-  {"id":13,"marathi":"Kanchan","common":"Orchid Tree","botanical":"Bauhinia variegata","category":"flowering","states":["hp","ut","pb","mp","mh"],"note":"Named for its orchid-like blooms; in the Himalayan foothills its buds are gathered and cooked as a spring vegetable."},
-  {"id":30,"marathi":"Bhendi","common":"Portia Tree","botanical":"Thespesia populnea","category":"flowering","states":["mh","gj","kl","tn","ga","ap"],"note":"A hardy coastal tree whose flowers open pale yellow at dawn and fade to dusky pink by evening."},
-  {"id":34,"marathi":"Tamhan","common":"Pride of India","botanical":"Lagerstroemia speciosa","category":"flowering","states":["mh","kl","ka","wb","or"],"note":"Maharashtra's state flower, drenching hillsides in violet-purple sprays with every monsoon."},
-  {"id":37,"marathi":"Tetu","common":"Indian Trumpet Flower","botanical":"Oroxylum indicum","category":"flowering","states":["as","wb","mh","ka","or"],"note":"Its huge sword-like seed pods dangle from bare branches, earning it the nickname 'Broken Bones Tree.'"},
-  {"id":38,"marathi":"Kala Kuda","common":"Sweet Indrajao","botanical":"Wrightia tinctoria","category":"flowering","states":["mh","mp","ka","tn","up"],"note":"Its jasmine-scented white flowers open after dusk, and the fine-grained wood is traditionally carved into toys and combs."},
-  {"id":5,"marathi":"Chinch","common":"Tamarind","botanical":"Tamarindus indica","category":"fruit","states":["mh","tn","ap","ka","tg","gj"],"note":"Its sour pulp souring countless dishes, from Konkan fish curries to Tamil Nadu's sambar."},
-  {"id":12,"marathi":"Bael","common":"Wood Apple","botanical":"Aegle marmelos","category":"fruit","states":["up","mp","br","mh","wb"],"note":"Sacred to Shiva, its hard woody shell is traditionally broken open only once the fruit has fully ripened."},
-  {"id":19,"marathi":"Jambul","common":"Jamun","botanical":"Syzygium cumini","category":"fruit","states":["mh","up","ka","gj","tn","wb"],"note":"A deep-purple summer fruit often eaten with a pinch of rock salt; its seed appears widely in folk remedies."},
-  {"id":22,"marathi":"Awala","common":"Indian Gooseberry","botanical":"Phyllanthus emblica","category":"fruit","states":["mp","up","mh","tn","rj"],"note":"One of the richest natural sources of vitamin C, and the anchor ingredient of Ayurveda's rejuvenating Chyawanprash."},
-  {"id":23,"marathi":"Kavath","common":"Elephant Apple","botanical":"Limonia acidissima","category":"fruit","states":["mh","ka","tn","ap","or"],"note":"A hard, woody-shelled fruit with tangy pulp, popular pounded into chutney across the Deccan plateau."},
-  {"id":28,"marathi":"Deshi Amba","common":"Native Mango","botanical":"Mangifera indica","category":"fruit","states":["mh","up","ap","gj","ka","br","wb"],"note":"India's national fruit — the Konkan coast's Alphonso is just one of hundreds of native cultivars grown nationwide."},
-  {"id":31,"marathi":"Ramphal","common":"Bullock's Heart","botanical":"Annona reticulata","category":"fruit","states":["mh","tn","ka","gj","ap"],"note":"A custard-apple relative bearing a heart-shaped fruit with creamy, custard-like pulp."},
-  {"id":35,"marathi":"Karvand","common":"Conkerberry","botanical":"Carissa carandas","category":"fruit","states":["mh","mp","rj","gj","up"],"note":"Tart berries that ripen from pink to deep purple, traditionally pickled across the western states."},
-  {"id":4,"marathi":"Moh","common":"Mahua","botanical":"Madhuca longifolia","category":"medicinal","states":["mp","ct","jh","or","mh","up"],"note":"Madhya Pradesh's state tree; its fragrant flowers are both a food staple and a traditional distillate for tribal communities of central India."},
-  {"id":16,"marathi":"Karanj","common":"Indian Beech","botanical":"Millettia pinnata","category":"medicinal","states":["mh","ka","kl","tn","ap","gj"],"note":"Its oil-rich seeds have fuelled village lamps and traditional skin remedies along the coastline for centuries."},
-  {"id":17,"marathi":"Bibba","common":"Marking Nut Tree","botanical":"Semecarpus anacardium","category":"medicinal","states":["mh","ka","kl","or","mp"],"note":"Its caustic nut oil once served as an indelible marking ink on cloth bundles and laundry."},
-  {"id":20,"marathi":"Behada","common":"Belleric Myrobalan","botanical":"Terminalia bellirica","category":"medicinal","states":["mh","mp","up","wb","ka","or"],"note":"One of the three fruits in Ayurveda's classical Triphala blend, alongside Awala and Harada."},
-  {"id":25,"marathi":"Ritha","common":"Soapnut","botanical":"Sapindus mukorossi","category":"medicinal","states":["ut","hp","up","jk","br"],"note":"Its saponin-rich fruit shells have lathered as a natural detergent and hair cleanser for generations."},
-  {"id":26,"marathi":"Kadhipatta","common":"Curry Leaf Tree","botanical":"Murraya koenigii","category":"medicinal","states":["mh","ka","tn","ap","kl","gj"],"note":"The aromatic leaf tempering that finishes countless dishes across southern and western kitchens."},
-  {"id":33,"marathi":"Kadunimb","common":"Neem","botanical":"Azadirachta indica","category":"medicinal","states":["mh","rj","tn","ka","up","ap","gj"],"note":"Perhaps India's most versatile tree — reached for in traditional medicine, natural pest control, and the daily neem-twig toothbrush."},
-  {"id":39,"marathi":"Kuda","common":"Tellicherry Bark","botanical":"Holarrhena pubescens","category":"medicinal","states":["mh","mp","ka","or","up"],"note":"Its bark has featured in traditional remedies for generations, taking its trade name from the Kerala port it was once shipped from."},
-  {"id":40,"marathi":"Khair","common":"Cutch Tree","botanical":"Senegalia catechu","category":"medicinal","states":["pb","hr","up","mp","mh","rj"],"note":"Its heartwood extract, catechu, lends paan its distinctive reddish-brown kattha."}
+  {"id":1,"marathi":"वड","common":"Banyan Tree","botanical":"Ficus benghalensis","category":"timber","states":["wb","mh","ka","ap","tn","gj"],"note":"India's national tree; its aerial roots descend into new trunks, letting a single tree spread into a small forest."},
+  {"id":2,"marathi":"पिंपळ","common":"Peepal Tree","botanical":"Ficus religiosa","category":"timber","states":["br","up","mp","mh","wb"],"note":"Sacred to both Hindus and Buddhists — tradition holds the Buddha attained enlightenment beneath a Peepal at Bodh Gaya, Bihar."},
+  {"id":6,"marathi":"उंबर","common":"Cluster Fig","botanical":"Ficus racemosa","category":"timber","states":["mh","ka","kl","wb","as"],"note":"Bears fig clusters straight from its trunk and older branches, making it a favourite feeding stop for birds and bats."},
+  {"id":9,"marathi":"सातवीण","common":"Indian Devil Tree","botanical":"Alstonia scholaris","category":"timber","states":["wb","or","as","kl","mh"],"note":"West Bengal's state tree, known locally as 'Saptaparni' for the whorls of seven leaves that ring each stem."},
+  {"id":11,"marathi":"शिसव","common":"North Indian Rosewood","botanical":"Dalbergia sissoo","category":"timber","states":["pb","hr","up","hp","jk","ut"],"note":"A quick-growing riverbank tree of the sub-Himalayan tracts, long favoured for furniture and railway sleepers."},
+  {"id":14,"marathi":"अर्जुन","common":"Arjuna Tree","botanical":"Terminalia arjuna","category":"timber","states":["mp","up","mh","br","wb","ka"],"note":"Named for the Mahabharata's warrior-archer; its bark has featured in traditional heart-tonic preparations for generations."},
+  {"id":15,"marathi":"शिवण","common":"Gamhar","botanical":"Gmelina arborea","category":"timber","states":["as","wb","or","mp","kl"],"note":"One of the fast-growing roots gathered into Ayurveda's classical 'Dashamula' group of ten roots."},
+  {"id":18,"marathi":"सिसम","common":"Indian Rosewood","botanical":"Dalbergia latifolia","category":"timber","states":["mh","ka","mp","tn","kl","or"],"note":"A slow-grown hardwood so dense it barely floats in water, ranked among India's most prized cabinet timbers."},
+  {"id":24,"marathi":"आंजन","common":"Hardwickia","botanical":"Hardwickia binata","category":"timber","states":["mh","mp","ap","tg","ka","tn"],"note":"One of the hardest native timbers, traditionally shaped into cart wheels, tool handles, and agricultural yokes."},
+  {"id":27,"marathi":"महोगनी","common":"Mahogany","botanical":"Swietenia macrophylla","category":"timber","states":["kl","ka","wb","mh","tn"],"note":"Introduced from tropical America over a century ago and now naturalised across South India's plantation belts."},
+  {"id":29,"marathi":"वावळ","common":"Indian Elm","botanical":"Holoptelea integrifolia","category":"timber","states":["mh","mp","gj","ka","up"],"note":"A hardy shade tree of village commons and field edges; its bark was once used in traditional leather tanning."},
+  {"id":32,"marathi":"शिरीष","common":"Siris Tree","botanical":"Albizia lebbeck","category":"timber","states":["mh","gj","rj","tn","ka","up"],"note":"Its rattling, papery seed pods earn it the folk name 'Woman's Tongue Tree' across the countryside."},
+  {"id":36,"marathi":"बांबू","common":"Bamboo","botanical":"Bambusa bambos","category":"timber","states":["kl","ka","tn","mh","wb","as"],"note":"Botanically a giant grass rather than a tree — and among the fastest-growing plants on the planet."},
+  {"id":3,"marathi":"बहावा","common":"Golden Shower Tree","botanical":"Cassia fistula","category":"flowering","states":["kl","tn","ka","mh","or"],"note":"Kerala's state flower; cascades of yellow blossom traditionally mark the arrival of the Vishu new year in April."},
+  {"id":7,"marathi":"कदंब","common":"Burflower-tree","botanical":"Neolamarckia cadamba","category":"flowering","states":["up","as","wb","or","kl"],"note":"Woven into Krishna's legends at Vrindavan; its fragrant orange globe-flowers open with the first monsoon rains."},
+  {"id":8,"marathi":"पळस","common":"Flame of the Forest","botanical":"Butea monosperma","category":"flowering","states":["jh","mp","up","ct","or","mh"],"note":"Jharkhand's state flower — its fiery blossoms have long supplied the natural dye used to colour Holi's powders."},
+  {"id":10,"marathi":"बकुळ","common":"Spanish Cherry","botanical":"Mimusops elengi","category":"flowering","states":["wb","ka","tn","mh","kl"],"note":"Its tiny star-shaped flowers hold their fragrance for days even after falling, prized in garlands strung for temple offerings."},
+  {"id":13,"marathi":"कांचन","common":"Orchid Tree","botanical":"Bauhinia variegata","category":"flowering","states":["hp","ut","pb","mp","mh"],"note":"Named for its orchid-like blooms; in the Himalayan foothills its buds are gathered and cooked as a spring vegetable."},
+  {"id":30,"marathi":"भेंडी","common":"Portia Tree","botanical":"Thespesia populnea","category":"flowering","states":["mh","gj","kl","tn","ga","ap"],"note":"A hardy coastal tree whose flowers open pale yellow at dawn and fade to dusky pink by evening."},
+  {"id":34,"marathi":"ताम्हण","common":"Pride of India","botanical":"Lagerstroemia speciosa","category":"flowering","states":["mh","kl","ka","wb","or"],"note":"Maharashtra's state flower, drenching hillsides in violet-purple sprays with every monsoon."},
+  {"id":37,"marathi":"टेटू","common":"Indian Trumpet Flower","botanical":"Oroxylum indicum","category":"flowering","states":["as","wb","mh","ka","or"],"note":"Its huge sword-like seed pods dangle from bare branches, earning it the nickname 'Broken Bones Tree.'"},
+  {"id":38,"marathi":"काळा कुडा","common":"Sweet Indrajao","botanical":"Wrightia tinctoria","category":"flowering","states":["mh","mp","ka","tn","up"],"note":"Its jasmine-scented white flowers open after dusk, and the fine-grained wood is traditionally carved into toys and combs."},
+  {"id":5,"marathi":"चिंच","common":"Tamarind","botanical":"Tamarindus indica","category":"fruit","states":["mh","tn","ap","ka","tg","gj"],"note":"Its sour pulp souring countless dishes, from Konkan fish curries to Tamil Nadu's sambar."},
+  {"id":12,"marathi":"बेल","common":"Wood Apple","botanical":"Aegle marmelos","category":"fruit","states":["up","mp","br","mh","wb"],"note":"Sacred to Shiva, its hard woody shell is traditionally broken open only once the fruit has fully ripened."},
+  {"id":19,"marathi":"जांभूळ","common":"Jamun","botanical":"Syzygium cumini","category":"fruit","states":["mh","up","ka","gj","tn","wb"],"note":"A deep-purple summer fruit often eaten with a pinch of rock salt; its seed appears widely in folk remedies."},
+  {"id":22,"marathi":"आवळा","common":"Indian Gooseberry","botanical":"Phyllanthus emblica","category":"fruit","states":["mp","up","mh","tn","rj"],"note":"One of the richest natural sources of vitamin C, and the anchor ingredient of Ayurveda's rejuvenating Chyawanprash."},
+  {"id":23,"marathi":"कवठ","common":"Elephant Apple","botanical":"Limonia acidissima","category":"fruit","states":["mh","ka","tn","ap","or"],"note":"A hard, woody-shelled fruit with tangy pulp, popular pounded into chutney across the Deccan plateau."},
+  {"id":28,"marathi":"देशी आंबा","common":"Native Mango","botanical":"Mangifera indica","category":"fruit","states":["mh","up","ap","gj","ka","br","wb"],"note":"India's national fruit — the Konkan coast's Alphonso is just one of hundreds of native cultivars grown nationwide."},
+  {"id":31,"marathi":"रामफळ","common":"Bullock's Heart","botanical":"Annona reticulata","category":"fruit","states":["mh","tn","ka","gj","ap"],"note":"A custard-apple relative bearing a heart-shaped fruit with creamy, custard-like pulp."},
+  {"id":35,"marathi":"करवंद","common":"Conkerberry","botanical":"Carissa carandas","category":"fruit","states":["mh","mp","rj","gj","up"],"note":"Tart berries that ripen from pink to deep purple, traditionally pickled across the western states."},
+  {"id":4,"marathi":"मोह","common":"Mahua","botanical":"Madhuca longifolia","category":"medicinal","states":["mp","ct","jh","or","mh","up"],"note":"Madhya Pradesh's state tree; its fragrant flowers are both a food staple and a traditional distillate for tribal communities of central India."},
+  {"id":16,"marathi":"करंज","common":"Indian Beech","botanical":"Millettia pinnata","category":"medicinal","states":["mh","ka","kl","tn","ap","gj"],"note":"Its oil-rich seeds have fuelled village lamps and traditional skin remedies along the coastline for centuries."},
+  {"id":17,"marathi":"बिब्बा","common":"Marking Nut Tree","botanical":"Semecarpus anacardium","category":"medicinal","states":["mh","ka","kl","or","mp"],"note":"Its caustic nut oil once served as an indelible marking ink on cloth bundles and laundry."},
+  {"id":20,"marathi":"बेहडा","common":"Belleric Myrobalan","botanical":"Terminalia bellirica","category":"medicinal","states":["mh","mp","up","wb","ka","or"],"note":"One of the three fruits in Ayurveda's classical Triphala blend, alongside Awala and Harada."},
+  {"id":25,"marathi":"रिठा","common":"Soapnut","botanical":"Sapindus mukorossi","category":"medicinal","states":["ut","hp","up","jk","br"],"note":"Its saponin-rich fruit shells have lathered as a natural detergent and hair cleanser for generations."},
+  {"id":26,"marathi":"कढीपत्ता","common":"Curry Leaf Tree","botanical":"Murraya koenigii","category":"medicinal","states":["mh","ka","tn","ap","kl","gj"],"note":"The aromatic leaf tempering that finishes countless dishes across southern and western kitchens."},
+  {"id":33,"marathi":"कडुनिंब","common":"Neem","botanical":"Azadirachta indica","category":"medicinal","states":["mh","rj","tn","ka","up","ap","gj"],"note":"Perhaps India's most versatile tree — reached for in traditional medicine, natural pest control, and the daily neem-twig toothbrush."},
+  {"id":39,"marathi":"कुडा","common":"Tellicherry Bark","botanical":"Holarrhena pubescens","category":"medicinal","states":["mh","mp","ka","or","up"],"note":"Its bark has featured in traditional remedies for generations, taking its trade name from the Kerala port it was once shipped from."},
+  {"id":40,"marathi":"खैर","common":"Cutch Tree","botanical":"Senegalia catechu","category":"medicinal","states":["pb","hr","up","mp","mh","rj"],"note":"Its heartwood extract, catechu, lends paan its distinctive reddish-brown kattha."}
 ]
 
 </script>
@@ -540,7 +545,7 @@
             <span class="cat-tag" data-cat="${p.category}">${CAT_LABELS[p.category]}</span>
             <span class="specimen-num">No. ${String(idx+1).padStart(2,'0')}</span>
           </div>
-          <h3 class="font-display text-base mt-1.5 leading-tight" style="color:var(--forest-deep)">${p.marathi}</h3>
+          <h3 class="font-marathi text-2xl mt-1.5 leading-tight" style="color:var(--forest-deep)">${p.marathi}</h3>
           <p class="text-sm font-medium" style="color:var(--ink)">${p.common}</p>
           <p class="botanical-name">${p.botanical}</p>
         </div>
