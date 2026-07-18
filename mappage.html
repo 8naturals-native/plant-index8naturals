@@ -60,7 +60,65 @@
     pointer-events:none;
     mix-blend-mode: multiply;
   }
+/* ---------- NAVIGATION ---------- */
 
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 0;
+    margin-bottom:20px;
+    border-bottom:2px solid var(--line);
+}
+
+.nav-left{
+    font-family:'Fraunces', serif;
+    font-size:24px;
+    font-weight:700;
+    color:var(--forest-dark);
+}
+
+.nav-right{
+    display:flex;
+    gap:12px;
+}
+
+.nav-right a{
+    text-decoration:none;
+    color:var(--forest-dark);
+    border:2px solid var(--forest);
+    padding:10px 18px;
+    border-radius:999px;
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.nav-right a:hover{
+    background:var(--forest);
+    color:white;
+}
+
+.nav-right a.active{
+    background:var(--forest);
+    color:white;
+}
+
+@media(max-width:700px){
+
+.navbar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
+}
+
+.nav-right{
+    width:100%;
+    flex-wrap:wrap;
+}
+
+}
   /* ---------- header ---------- */
   .eyebrow{
     font-family:'Inter',sans-serif;
