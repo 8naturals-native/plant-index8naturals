@@ -190,7 +190,7 @@
   }
 
   .state-path{
-    fill: #DCD3B8;
+    fill: var(--fill-color, #DCD3B8);
     stroke: var(--cream-deep);
     stroke-width: 0.9;
     stroke-linejoin: round;
@@ -307,6 +307,118 @@
     text-decoration: underline;
     text-underline-offset: 3px;
     cursor:pointer;
+  }
+
+  /* ---------- stats strip ---------- */
+  .stats-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.5rem 1.6rem;
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px solid var(--paper-line);
+  }
+  .stat-item{ display:flex; align-items:baseline; gap:0.4rem; }
+  .stat-num{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:1.15rem;
+    color: var(--forest-deep);
+  }
+  .stat-label{
+    font-size:0.68rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color: rgba(36,31,22,0.5);
+    font-weight:600;
+  }
+
+  /* ---------- search autocomplete ---------- */
+  .search-outer{ position:relative; width:100%; }
+  .search-suggestions{
+    position:absolute;
+    top:calc(100% + 6px);
+    left:0; right:0;
+    background: var(--cream);
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    box-shadow: var(--shadow-soft);
+    max-height:260px;
+    overflow-y:auto;
+    z-index:40;
+    display:none;
+  }
+  .search-suggestions.open{ display:block; }
+  .suggestion-item{
+    padding:0.55rem 0.9rem;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    gap:0.05rem;
+    border-bottom:1px solid var(--paper-line);
+  }
+  .suggestion-item:last-child{ border-bottom:none; }
+  .suggestion-item:hover, .suggestion-item.active{ background: rgba(111,143,106,0.14); }
+  .suggestion-main{ font-family:'Mukta',sans-serif; font-weight:700; font-size:0.86rem; color:var(--forest-deep); }
+  .suggestion-sub{ font-size:0.68rem; font-style:italic; color:rgba(36,31,22,0.55); }
+
+  /* ---------- state dropdown ---------- */
+  .state-select-wrap{ display:flex; align-items:center; gap:0.5rem; margin-top:10px; }
+  .state-select-label{ font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--sage); font-weight:700; white-space:nowrap; }
+  #stateSelect{
+    flex:1;
+    font-family:'Inter',sans-serif;
+    font-size:0.78rem;
+    font-weight:600;
+    color: var(--ink);
+    background: rgba(255,255,255,0.6);
+    border:1px solid var(--paper-line);
+    border-radius:999px;
+    padding:0.4rem 0.9rem;
+    cursor:pointer;
+  }
+  #stateSelect:focus{ border-color: var(--sage); box-shadow: 0 0 0 3px rgba(111,143,106,0.18); }
+
+  /* ---------- map legend (choropleth) ---------- */
+  .map-legend{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    margin-top:10px;
+    padding:0 0.15rem;
+  }
+  .map-legend-label{ font-size:0.65rem; color:rgba(36,31,22,0.5); font-weight:600; }
+  .map-legend-gradient{
+    flex:1;
+    height:8px;
+    border-radius:999px;
+    background: linear-gradient(90deg, #DCD3B8 0%, var(--sage) 55%, var(--forest) 100%);
+  }
+
+  /* ---------- reset filters button ---------- */
+  .reset-filters-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:0.35rem;
+    margin-top:0.75rem;
+    padding:0.5rem 1.1rem;
+    border-radius:999px;
+    border:1.5px solid var(--forest);
+    background:transparent;
+    color: var(--forest);
+    font-family:'Inter',sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    cursor:pointer;
+    transition: all 0.2s ease;
+  }
+  .reset-filters-btn:hover{ background: var(--forest); color:#fff; }
+
+  /* ---------- keyboard accessibility for map states ---------- */
+  .state-path:focus-visible{
+    outline: 2.5px solid var(--clay);
+    outline-offset: 1px;
+    filter: brightness(1.1);
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -454,14 +566,18 @@
         <a href="mailto:8naturals.org@gmail.com" class="contact-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>8naturals.org@gmail.com</a>
         <a href="https://www.8naturals.wordpress.com" target="_blank" rel="noopener" class="contact-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>8naturals.wordpress.com</a>
       </div>
+      <div class="stats-strip" id="statsStrip" aria-live="polite"></div>
     </div>
 
     <!-- search + filters -->
     <div class="mt-7 flex flex-col lg:flex-row gap-4 lg:items-center">
-      <label class="search-wrap flex items-center gap-2 rounded-full px-4 py-2.5 w-full lg:max-w-sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:var(--forest); flex-shrink:0;"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20 L16.5 16.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <input id="searchInput" type="text" placeholder="Search Marathi, common, or botanical name…" class="w-full text-sm" />
-      </label>
+      <div class="search-outer w-full lg:max-w-sm">
+        <label class="search-wrap flex items-center gap-2 rounded-full px-4 py-2.5 w-full">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:var(--forest); flex-shrink:0;"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20 L16.5 16.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input id="searchInput" type="text" placeholder="Search Marathi, common, or botanical name…" class="w-full text-sm" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="searchSuggestions" />
+        </label>
+        <div class="search-suggestions" id="searchSuggestions" role="listbox"></div>
+      </div>
 
       <div class="flex flex-wrap gap-2" id="filterPills">
         <div class="pill" data-cat="timber" data-active="false"><span class="pill-dot"></span>Shade &amp; Timber</div>
@@ -529,6 +645,19 @@
         <div id="tooltip"><div class="tt-name"></div><div class="tt-count"></div></div>
       </div>
 
+      <div class="state-select-wrap">
+        <label for="stateSelect" class="state-select-label">Jump to state</label>
+        <select id="stateSelect" aria-label="Select a state to filter species">
+          <option value="">All states…</option>
+        </select>
+      </div>
+
+      <div class="map-legend">
+        <span class="map-legend-label">Fewer species</span>
+        <span class="map-legend-gradient" aria-hidden="true"></span>
+        <span class="map-legend-label">More species</span>
+      </div>
+
       <p class="text-[0.68rem] mt-3 px-1" style="color:rgba(36,31,22,0.4)">
         Distributions shown reflect each species' primary native range — most also grow more widely across the subcontinent. Base map © Victor Cazanave, svg-maps.com, CC BY 4.0.
       </p>
@@ -548,7 +677,13 @@
 
       <!-- Card grid -->
       <div id="cardGrid" class="explorer-scroll grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1" style="max-height: 640px;"></div>
-      <p id="emptyState" class="hidden text-sm italic text-center py-10" style="color:rgba(36,31,22,0.5)">No species match this search — try another name or clear filters.</p>
+      <div id="emptyState" class="hidden text-center py-10">
+        <p class="text-sm italic" style="color:rgba(36,31,22,0.5)">No species match this search — try another name or clear filters.</p>
+        <button type="button" class="reset-filters-btn" id="resetFiltersBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 4v6h6"/></svg>
+          Reset all filters
+        </button>
+      </div>
     </section>
   </main>
 
@@ -1087,6 +1222,132 @@
   const selectedStateBadge = document.getElementById('selectedStateBadge');
   const clearStateBtn = document.getElementById('clearStateBtn');
   const explorerHeader = document.getElementById('explorerHeader');
+  const statsStrip = document.getElementById('statsStrip');
+  const stateSelect = document.getElementById('stateSelect');
+  const searchInputEl = document.getElementById('searchInput');
+  const searchSuggestions = document.getElementById('searchSuggestions');
+  const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+  // ---------- stats strip ----------
+  const statesCovered = Object.keys(stateCount).length;
+  const endemicCount = PLANTS.filter(p => /endemic/i.test(p.note)).length;
+  statsStrip.innerHTML = `
+    <span class="stat-item"><span class="stat-num">${PLANTS.length}</span><span class="stat-label">Species mapped</span></span>
+    <span class="stat-item"><span class="stat-num">${statesCovered}</span><span class="stat-label">States &amp; UTs</span></span>
+    <span class="stat-item"><span class="stat-num">${endemicCount}</span><span class="stat-label">Endemic species</span></span>
+  `;
+
+  // ---------- choropleth colouring ----------
+  function hexToRgb(hex){
+    const v = parseInt(hex.slice(1), 16);
+    return [(v>>16)&255, (v>>8)&255, v&255];
+  }
+  function mixRgb(a, b, t){
+    return a.map((c,i) => Math.round(c + (b[i]-c)*t));
+  }
+  const scaleStops = [hexToRgb('#DCD3B8'), hexToRgb('#6F8F6A'), hexToRgb('#1F3B2C')];
+  const maxCount = Math.max(1, ...Object.values(stateCount));
+  function colorForCount(count){
+    if (!count) return '#EFE9D8';
+    const t = Math.min(1, count / maxCount);
+    const [c0, c1] = t < 0.5 ? [scaleStops[0], scaleStops[1]] : [scaleStops[1], scaleStops[2]];
+    const localT = t < 0.5 ? t / 0.5 : (t - 0.5) / 0.5;
+    const [r,g,b] = mixRgb(c0, c1, localT);
+    return `rgb(${r},${g},${b})`;
+  }
+  statePaths.forEach(p => {
+    p.style.setProperty('--fill-color', colorForCount(stateCount[p.id] || 0));
+  });
+
+  // ---------- state dropdown ----------
+  const sortedStates = statePaths
+    .map(p => ({ id: p.id, name: p.getAttribute('data-name') }))
+    .sort((a,b) => a.name.localeCompare(b.name));
+  sortedStates.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = `${s.name} (${stateCount[s.id] || 0})`;
+    stateSelect.appendChild(opt);
+  });
+  stateSelect.addEventListener('change', () => {
+    selectedState = stateSelect.value || null;
+    render();
+  });
+
+  // ---------- keyboard accessibility on map ----------
+  statePaths.forEach(path => {
+    path.setAttribute('tabindex', '0');
+    path.setAttribute('role', 'button');
+    path.setAttribute('aria-label', `${path.getAttribute('data-name')}: ${stateCount[path.id] || 0} native species mapped`);
+    path.addEventListener('focus', (e) => {
+      const name = path.getAttribute('data-name');
+      const count = stateCount[path.id] || 0;
+      tooltip.querySelector('.tt-name').textContent = name;
+      tooltip.querySelector('.tt-count').textContent = count + ' native species mapped';
+      const rect = mapWrap.getBoundingClientRect();
+      const pathRect = path.getBoundingClientRect();
+      tooltip.style.left = (pathRect.left + pathRect.width/2 - rect.left) + 'px';
+      tooltip.style.top = (pathRect.top - rect.top) + 'px';
+      tooltip.style.opacity = '1';
+    });
+    path.addEventListener('blur', () => { tooltip.style.opacity = '0'; });
+    path.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        path.dispatchEvent(new Event('click'));
+      }
+    });
+  });
+
+  // ---------- search autocomplete ----------
+  function closeSuggestions(){
+    searchSuggestions.classList.remove('open');
+    searchSuggestions.innerHTML = '';
+    searchInputEl.setAttribute('aria-expanded', 'false');
+  }
+  function showSuggestions(term){
+    if (!term){ closeSuggestions(); return; }
+    const matches = PLANTS.filter(p => {
+      const hay = (p.marathi + ' ' + p.common + ' ' + p.botanical).toLowerCase();
+      return hay.includes(term);
+    }).slice(0, 8);
+    if (!matches.length){ closeSuggestions(); return; }
+    searchSuggestions.innerHTML = matches.map(p => `
+      <div class="suggestion-item" role="option" data-plant-id="${p.id}">
+        <span class="suggestion-main">${p.marathi} · ${p.common}</span>
+        <span class="suggestion-sub">${p.botanical || ''}</span>
+      </div>
+    `).join('');
+    searchSuggestions.classList.add('open');
+    searchInputEl.setAttribute('aria-expanded', 'true');
+    searchSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const id = Number(item.getAttribute('data-plant-id'));
+        const plant = PLANTS.find(p => p.id === id);
+        searchInputEl.value = plant.common;
+        searchTerm = plant.common.toLowerCase();
+        focusedPlantId = id;
+        closeSuggestions();
+        render();
+      });
+    });
+  }
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-outer')) closeSuggestions();
+  });
+
+  // ---------- reset filters ----------
+  resetFiltersBtn.addEventListener('click', () => {
+    activeCats.clear();
+    searchTerm = '';
+    selectedState = null;
+    focusedPlantId = null;
+    searchInputEl.value = '';
+    stateSelect.value = '';
+    closeSuggestions();
+    document.querySelectorAll('.pill').forEach(pill => pill.setAttribute('data-active', 'false'));
+    render();
+  });
 
   // ---------- tooltip ----------
   statePaths.forEach(path => {
@@ -1108,16 +1369,21 @@
       } else {
         selectedState = path.id;
       }
+      stateSelect.value = selectedState || '';
       render();
     });
   });
 
-  clearStateBtn.addEventListener('click', () => { selectedState = null; render(); });
+  clearStateBtn.addEventListener('click', () => { selectedState = null; stateSelect.value = ''; render(); });
 
   // ---------- search + filters ----------
-  document.getElementById('searchInput').addEventListener('input', (e) => {
+  searchInputEl.addEventListener('input', (e) => {
     searchTerm = e.target.value.trim().toLowerCase();
+    showSuggestions(searchTerm);
     render();
+  });
+  searchInputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSuggestions();
   });
 
   document.querySelectorAll('.pill').forEach(pill => {
