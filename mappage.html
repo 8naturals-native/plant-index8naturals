@@ -415,6 +415,9 @@
   .reset-filters-btn:hover{ background: var(--forest); color:#fff; }
 
   /* ---------- keyboard accessibility for map states ---------- */
+  .state-path:focus{
+    outline: none;
+  }
   .state-path:focus-visible{
     outline: 2.5px solid var(--clay);
     outline-offset: 1px;
@@ -426,7 +429,7 @@
     * { transition-duration: 0.01ms !important; }
   }
 
-  input:focus, button:focus, [tabindex]:focus{
+  input:focus, button:focus, [tabindex]:focus:not(.state-path){
     outline: 2px solid var(--sage);
     outline-offset: 2px;
   }
