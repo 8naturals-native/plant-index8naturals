@@ -205,11 +205,12 @@
   }
   .state-path.is-glow{
     fill: var(--amber);
-    animation: glowPulse 1.6s ease-in-out infinite;
+    stroke: var(--amber);
+    animation: glowPulse 1.1s ease-in-out infinite;
   }
   @keyframes glowPulse{
-    0%, 100% { filter: brightness(1) drop-shadow(0 0 0px rgba(192,138,40,0.0)); }
-    50% { filter: brightness(1.18) drop-shadow(0 0 6px rgba(192,138,40,0.55)); }
+    0%, 100% { filter: brightness(1) drop-shadow(0 0 0px rgba(192,138,40,0)); }
+    50% { filter: brightness(1.45) drop-shadow(0 0 16px rgba(192,138,40,0.95)); }
   }
 
   #tooltip{
@@ -425,8 +426,12 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .state-path.is-glow{ animation: none; }
-    * { transition-duration: 0.01ms !important; }
+    .state-path.is-glow{ animation: glowPulseSoft 1.8s ease-in-out infinite; }
+    @keyframes glowPulseSoft{
+      0%, 100% { filter: brightness(1) drop-shadow(0 0 0px rgba(192,138,40,0)); }
+      50% { filter: brightness(1.15) drop-shadow(0 0 6px rgba(192,138,40,0.5)); }
+    }
+    *:not(.state-path) { transition-duration: 0.01ms !important; }
   }
 
   input:focus, button:focus, [tabindex]:focus:not(.state-path){
